@@ -1,20 +1,42 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Devdactic Caching
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearCache()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshUsers($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-button expand="full" (click)="refreshUsers()">Load Users</ion-button>
+  <ion-button expand="full" (click)="loadChuckJoke(false)">Load Joke</ion-button>
+  <ion-button expand="full" (click)="loadChuckJoke(true)">Fresh Joke</ion-button>
+
+  <ion-card *ngIf="joke">
+    <ion-card-header>
+      <ion-card-title>Latest Chuck Joke</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-text-center">
+      <img [src]="joke.icon_url">
+      <ion-label>{{ joke.value }}</ion-label>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let user of users">
+      <ion-avatar slot="start">
+        <img [src]="user.picture.medium">
+      </ion-avatar>
+      <h2 class="ion-text-capitalize">{{ user.name?.first }} {{ user.name?.last }}</h2>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
